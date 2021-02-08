@@ -5,9 +5,37 @@ branding:
   color: 'purple'
 inputs:
   input:
-    description: --input argument.
+    description: --input argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
     required: false
     default: '.'
+  severity:
+    description: --severity argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
+  confidence:
+    description: --confidence argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
+  checks:
+    description: --checks argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
+  exclude-checks:
+    description: --exclude-checks argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
+  upgrade:
+    description: --upgrade argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
+  electron-version:
+    description: --electron-version argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
+  parser-plugins:
+    description: --parser-plugins argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -29,7 +57,7 @@ runs:
       - name: 'Run electronegativity'
         run: |
           mkdir ../results
-          node ./electronegativity/dist/index.js -r -o ../results/out.sarif -i ${{ inputs.input }}
+          node ./electronegativity/dist/index.js -r -o ../results/out.sarif -i "${{ inputs.input }}" --checks "${{ inputs.checks }}" --exclude-checks "${{ inputs.exclude-checks }}"
 
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v1
