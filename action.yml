@@ -40,6 +40,10 @@ inputs:
     description: --parser-plugins argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
     required: false
     default: ''
+  node-args:
+    description: If you're running into the "Fatal Error JavaScript heap out of memory", you can pass additional arguments to node like --max-old-space-size=4096
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -70,4 +74,4 @@ runs:
         if [[ "${{ inputs.parser-plugins }}" != "" ]]; then
           parserplugins="--parser-plugins ${{ inputs.parser-plugins }}"
         fi
-        node electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
+        node $node-args electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
