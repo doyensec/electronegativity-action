@@ -43,19 +43,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: 'Install electronegativity'
-      shell: bash
-      run: |
-        cd electronegativity
-        npm install
-        npm run build
-        cd -
-        mv electronegativity ../electronegativity
-        # npm install @doyensec/electronegativity@${{ inputs.version }} -g
-
     - name: 'Run electronegativity'
       shell: bash
       run: |
+        npm install @doyensec/electronegativity@${{ inputs.version }} -g
         mkdir ../results
         input="-i ${{ inputs.input }}"
         if [[ "${{ inputs.severity }}" != "" ]]; then
@@ -79,5 +70,4 @@ runs:
         if [[ "${{ inputs.parser-plugins }}" != "" ]]; then
           parserplugins="--parser-plugins ${{ inputs.parser-plugins }}"
         fi
-        # node electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
-        node ../electronegativity/dist/index.js -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
+        node electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
