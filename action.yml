@@ -8,6 +8,10 @@ inputs:
     description: --input argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
     required: false
     default: '.'
+  version:
+    description: NPM version of Electronegativity
+    required: false
+    default: 'latest'
   severity:
     description: --severity argument. See https://github.com/doyensec/electronegativity/blob/master/README.md#cli
     required: false
@@ -47,15 +51,13 @@ runs:
         npm run build
         cd -
         mv electronegativity ../electronegativity
-        # npm install @doyensec/electronegativity -g
+        # npm install @doyensec/electronegativity@${{ inputs.version }} -g
 
     - name: 'Run electronegativity'
       shell: bash
       run: |
         mkdir ../results
-        if [[ "${{ inputs.input }}" != "" ]]; then
-          input="-i ${{ inputs.input }}"
-        fi
+        input="-i ${{ inputs.input }}"
         if [[ "${{ inputs.severity }}" != "" ]]; then
           severity="--severity ${{ inputs.severity }}"
         fi
