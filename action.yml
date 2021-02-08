@@ -39,36 +39,43 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - name: 'Electronegativity checkout'
-        uses: actions/checkout@v2
-        with:
-          repository: 'jarlob/electronegativity'
-          ref: sarif2
-          path: electronegativity
-         
-      - name: 'Install electronegativity'
-        run: |
-          cd electronegativity
-          npm install
-          npm run build
-          cd ..
-          # npm install @doyensec/electronegativity -g
-          
-      - name: 'Run electronegativity'
-        run: |
-          mkdir ../results
-          if [[ "${{ inputs.input }}" != "" ]]; then
-            input="-i ${{ inputs.input }}"
-          fi
-          if [[ "${{ inputs.checks }}" != "" ]]; then
-            checks="--checks ${{ inputs.checks }}"
-          fi
-          if [[ "${{ inputs.exclude-checks }}" != "" ]]; then
-            excludechecks="--exclude-checks ${{ inputs.exclude-checks }}"
-          fi
-          node ./electronegativity/dist/index.js -r -o ../results/out.sarif $input $checks $excludechecks
+    - name: 'Install electronegativity'
+      shell: bash
+      run: |
+        cd electronegativity
+        npm install
+        npm run build
+        cd -
+        mv electronegativity ../electronegativity
+        # npm install @doyensec/electronegativity -g
 
-      - name: Upload sarif
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: ../results
+    - name: 'Run electronegativity'
+      shell: bash
+      run: |
+        mkdir ../results
+        if [[ "${{ inputs.input }}" != "" ]]; then
+          input="-i ${{ inputs.input }}"
+        fi
+        if [[ "${{ inputs.severity }}" != "" ]]; then
+          severity="--severity ${{ inputs.severity }}"
+        fi
+        if [[ "${{ inputs.confidence }}" != "" ]]; then
+          confidence="--confidence ${{ inputs.confidence }}"
+        fi
+        if [[ "${{ inputs.checks }}" != "" ]]; then
+          checks="--checks ${{ inputs.checks }}"
+        fi
+        if [[ "${{ inputs.exclude-checks }}" != "" ]]; then
+          excludechecks="--exclude-checks ${{ inputs.exclude-checks }}"
+        fi
+        if [[ "${{ inputs.upgrade }}" != "" ]]; then
+          upgrade="--upgrade ${{ inputs.upgrade }}"
+        fi
+        if [[ "${{ inputs.electron-version }}" != "" ]]; then
+          electronversion="--electron-version ${{ inputs.electron-version }}"
+        fi
+        if [[ "${{ inputs.parser-plugins }}" != "" ]]; then
+          parserplugins="--parser-plugins ${{ inputs.parser-plugins }}"
+        fi
+        # node electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
+        node ../electronegativity/dist/index.js -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
