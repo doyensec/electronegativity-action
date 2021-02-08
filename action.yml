@@ -57,7 +57,16 @@ runs:
       - name: 'Run electronegativity'
         run: |
           mkdir ../results
-          node ./electronegativity/dist/index.js -r -o ../results/out.sarif -i "${{ inputs.input }}" --checks "${{ inputs.checks }}" --exclude-checks "${{ inputs.exclude-checks }}"
+          if [[ "${{ inputs.input }}" != "" ]]; then
+            input="-i ${{ inputs.input }}"
+          fi
+          if [[ "${{ inputs.checks }}" != "" ]]; then
+            checks="--checks ${{ inputs.checks }}"
+          fi
+          if [[ "${{ inputs.exclude-checks }}" != "" ]]; then
+            excludechecks="--exclude-checks ${{ inputs.exclude-checks }}"
+          fi
+          node ./electronegativity/dist/index.js -r -o ../results/out.sarif $input $checks $excludechecks
 
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v1
