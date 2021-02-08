@@ -1,0 +1,37 @@
+name: 'Electronegativity'
+description: 'Electronegativity is a tool to identify misconfigurations and security anti-patterns in Electron applications.'
+branding:
+  icon: 'check-circle'
+  color: 'purple'
+inputs:
+  input:
+    description: --input argument.
+    required: false
+    default: '.'
+runs:
+  using: "composite"
+  steps:
+      - name: 'Electronegativity checkout'
+        uses: actions/checkout@v2
+        with:
+          repository: 'jarlob/electronegativity'
+          ref: sarif2
+          path: electronegativity
+         
+      - name: 'Install electronegativity'
+        run: |
+          cd electronegativity
+          npm install
+          npm run build
+          cd ..
+          # npm install @doyensec/electronegativity -g
+          
+      - name: 'Run electronegativity'
+        run: |
+          mkdir ../results
+          node ./electronegativity/dist/index.js -r -o ../results/out.sarif -i ${{ inputs.input }}
+
+      - name: Upload sarif
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ../results
