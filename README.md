@@ -41,3 +41,14 @@ Add the following lines in your workflow before the action:
 ```
 
 See [https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally) for other possible solutions.
+
+### Q:
+I'm running into the `Fatal Error JavaScript heap out of memory`
+### A:
+Specify additional memory with node arguments:
+
+```yaml
+- uses: electronegativity-action@v1.0
+  with:
+    node-args: "--max-old-space-size=4096"
+```
