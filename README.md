@@ -30,11 +30,9 @@ jobs:
 ## FAQ
 
 ### Q:
-
 I'm getting `checkPermissions Missing write access to /usr/local/lib/node_modules`
 
 ### A:
-
 Add the following lines in your workflow before the action:
 
 ```yaml
