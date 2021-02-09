@@ -74,4 +74,7 @@ runs:
         if [[ "${{ inputs.parser-plugins }}" != "" ]]; then
           parserplugins="--parser-plugins ${{ inputs.parser-plugins }}"
         fi
-        node $node-args electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
+        if [[ "${{ inputs.node-args }}" != "" ]]; then
+          export NODE_OPTIONS="${{ inputs.node-args }}"
+        fi
+        electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
