@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '12'
 
-      - uses: doyensec/electronegativity-action@v1.0
+      - uses: doyensec/electronegativity-action@v1.1
 
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v1
@@ -48,7 +48,7 @@ I'm running into the `Fatal Error JavaScript heap out of memory`
 Specify additional memory with node arguments:
 
 ```yaml
-- uses: doyensec/electronegativity-action@v1.0
+- uses: doyensec/electronegativity-action@v1.1
   with:
     node-args: "--max-old-space-size=4096"
 ```
