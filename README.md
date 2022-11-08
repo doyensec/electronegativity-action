@@ -24,7 +24,7 @@ jobs:
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: ../results
+          sarif_file: ../electronegativity_results
 ```
 
 ## FAQ
