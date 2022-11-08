@@ -51,7 +51,7 @@ runs:
       shell: bash
       run: |
         npm install @doyensec/electronegativity@${{ inputs.version }} -g
-        mkdir ../results
+        mkdir ../electronegativity_results
         input="-i ${{ inputs.input }}"
         if [[ "${{ inputs.severity }}" != "" ]]; then
           severity="--severity ${{ inputs.severity }}"
@@ -77,4 +77,4 @@ runs:
         if [[ "${{ inputs.node-args }}" != "" ]]; then
           export NODE_OPTIONS="${{ inputs.node-args }}"
         fi
-        electronegativity -r -o ../results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
+        electronegativity -r -o ../electronegativity_results/out.sarif $input $severity $confidence $checks $excludechecks $upgrade $electronversion $parserplugins
