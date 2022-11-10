@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '12'
 
-      - uses: doyensec/electronegativity-action@v1.1
+      - uses: doyensec/electronegativity-action@v2
 
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v1
